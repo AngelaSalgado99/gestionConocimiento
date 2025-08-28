@@ -1,16 +1,18 @@
 package com.example.parametrizacion.controller;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.example.parametrizacion.model.ResearchProject;
 import com.example.parametrizacion.service.ResearchProjectService;
 
@@ -27,19 +29,19 @@ public class ResearchProjectController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResearchProject> getResearchProjectById(@PathVariable String id) {
+    public ResponseEntity<ResearchProject> getResearchProjectById(@PathVariable Long id) {
         return researchProjectService.getResearchProjectById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/group/{groupId}")
-    public List<ResearchProject> getResearchProjectsByGroup(@PathVariable String groupId) {
+    public List<ResearchProject> getResearchProjectsByGroup(@PathVariable Long groupId) {
         return researchProjectService.getResearchProjectsByGroup(groupId);
     }
 
     @GetMapping("/seedbed/{seedbedId}")
-    public List<ResearchProject> getResearchProjectsBySeedbed(@PathVariable String seedbedId) {
+    public List<ResearchProject> getResearchProjectsBySeedbed(@PathVariable Long seedbedId) {
         return researchProjectService.getResearchProjectsBySeedbed(seedbedId);
     }
 
@@ -59,8 +61,8 @@ public class ResearchProjectController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResearchProject> updateResearchProject(@PathVariable String id, 
-            @RequestBody ResearchProject researchProject) {
+    public ResponseEntity<ResearchProject> updateResearchProject(@PathVariable Long id,
+                                                                @RequestBody ResearchProject researchProject) {
         try {
             ResearchProject updated = researchProjectService.updateResearchProject(id, researchProject);
             return ResponseEntity.ok(updated);
@@ -70,7 +72,7 @@ public class ResearchProjectController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteResearchProject(@PathVariable String id) {
+    public ResponseEntity<Void> deleteResearchProject(@PathVariable Long id) {
         try {
             researchProjectService.deleteResearchProject(id);
             return ResponseEntity.ok().build();

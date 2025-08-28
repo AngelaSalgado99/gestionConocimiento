@@ -34,7 +34,7 @@ public class SeedbedMemberController {
     }
 
     @GetMapping("/seedbed/{seedbedId}")
-    public List<SeedbedMember> getSeedbedMembersBySeedbed(@PathVariable String seedbedId) {
+    public List<SeedbedMember> getSeedbedMembersBySeedbed(@PathVariable Long seedbedId) {
         return seedbedMemberService.getSeedbedMembersBySeedbed(seedbedId);
     }
 

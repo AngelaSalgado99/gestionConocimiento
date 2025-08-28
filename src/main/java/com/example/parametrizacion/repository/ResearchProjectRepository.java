@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.example.parametrizacion.model.ResearchProject;
 
 @Repository
-public interface ResearchProjectRepository extends JpaRepository<ResearchProject, String> {
+public interface ResearchProjectRepository extends JpaRepository<ResearchProject, Long> {
     List<ResearchProject> findByResearchGroupId(Long researchGroupId);
     List<ResearchProject> findByResearchSeedbedId(Long researchSeedbedId);
     List<ResearchProject> findByResearchLineId(Long researchLineId);

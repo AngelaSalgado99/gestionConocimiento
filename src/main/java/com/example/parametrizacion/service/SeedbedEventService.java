@@ -1,14 +1,15 @@
 package com.example.parametrizacion.service;
 
-import com.example.parametrizacion.model.ResearchSeedbed;
-import com.example.parametrizacion.model.SeedbedEvent;
-import com.example.parametrizacion.repository.ResearchSeedbedRepository;
-import com.example.parametrizacion.repository.SeedbedEventRepository;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import com.example.parametrizacion.model.SeedbedEvent;
+import com.example.parametrizacion.model.ResearchSeedbed;
+import com.example.parametrizacion.repository.SeedbedEventRepository;
+import com.example.parametrizacion.repository.ResearchSeedbedRepository;
 
 @Service
 public class SeedbedEventService {
@@ -19,23 +20,19 @@ public class SeedbedEventService {
     @Autowired
     private ResearchSeedbedRepository researchSeedbedRepository;
 
-    // 📌 Obtener todos los eventos
-    public List<SeedbedEvent> getAllSeedbedEvents() {
+    public List<SeedbedEvent> getAllEvents() {
         return seedbedEventRepository.findAll();
     }
 
-    // 📌 Obtener un evento por ID
-    public Optional<SeedbedEvent> getSeedbedEventById(Long id) {
+    public Optional<SeedbedEvent> getEventById(Long id) {
         return seedbedEventRepository.findById(id);
     }
 
-    // 📌 Obtener eventos por semillero
-    public List<SeedbedEvent> getSeedbedEventsBySeedbed(Long seedbedId) {
+    public List<SeedbedEvent> getEventsBySeedbed(Long seedbedId) {
         return seedbedEventRepository.findByResearchSeedbedId(seedbedId);
     }
 
-    // 📌 Crear un evento
-    public SeedbedEvent createSeedbedEvent(SeedbedEvent event) {
+    public SeedbedEvent createEvent(SeedbedEvent event) {
         if (event.getResearchSeedbed() == null || event.getResearchSeedbed().getId() == null) {
             throw new RuntimeException("El ResearchSeedbed es obligatorio");
         }
@@ -43,14 +40,17 @@ public class SeedbedEventService {
         ResearchSeedbed seedbed = researchSeedbedRepository.findById(event.getResearchSeedbed().getId())
                 .orElseThrow(() -> new RuntimeException("ResearchSeedbed no encontrado"));
 
+        if (seedbedEventRepository.existsByNameAndResearchSeedbedId(event.getName(), seedbed.getId())) {
+            throw new RuntimeException("Ya existe un evento con este nombre en el semillero");
+        }
+
         event.setResearchSeedbed(seedbed);
         return seedbedEventRepository.save(event);
     }
 
-    // 📌 Actualizar un evento
-    public SeedbedEvent updateSeedbedEvent(Long id, SeedbedEvent event) {
+    public SeedbedEvent updateEvent(Long id, SeedbedEvent event) {
         SeedbedEvent existing = seedbedEventRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("SeedbedEvent no encontrado"));
+                .orElseThrow(() -> new RuntimeException("Evento no encontrado"));
 
         if (event.getName() != null) existing.setName(event.getName());
         if (event.getDescription() != null) existing.setDescription(event.getDescription());
@@ -70,10 +70,9 @@ public class SeedbedEventService {
         return seedbedEventRepository.save(existing);
     }
 
-    // 📌 Eliminar un evento
-    public void deleteSeedbedEvent(Long id) {
+    public void deleteEvent(Long id) {
         if (!seedbedEventRepository.existsById(id)) {
-            throw new RuntimeException("SeedbedEvent no encontrado");
+            throw new RuntimeException("Evento no encontrado");
         }
         seedbedEventRepository.deleteById(id);
     }

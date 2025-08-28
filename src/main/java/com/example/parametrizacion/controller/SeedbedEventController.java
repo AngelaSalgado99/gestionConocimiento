@@ -1,73 +1,66 @@
 package com.example.parametrizacion.controller;
 
-import com.example.parametrizacion.model.SeedbedEvent;
-import com.example.parametrizacion.service.SeedbedEventService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.parametrizacion.model.SeedbedEvent;
+import com.example.parametrizacion.service.SeedbedEventService;
+
 @RestController
-@RequestMapping("/seedbed-events")
+@RequestMapping("/api/seedbed-events")
 public class SeedbedEventController {
 
     @Autowired
     private SeedbedEventService seedbedEventService;
 
-    // 📌 Obtener todos los eventos
+    // Obtener todos los eventos
     @GetMapping
-    public ResponseEntity<List<SeedbedEvent>> getAllSeedbedEvents() {
-        List<SeedbedEvent> events = seedbedEventService.getAllSeedbedEvents();
-        return ResponseEntity.ok(events);
+    public ResponseEntity<List<SeedbedEvent>> getAllEvents() {
+        return ResponseEntity.ok(seedbedEventService.getAllEvents());
     }
 
-    // 📌 Obtener un evento por ID
+    // Obtener evento por ID
     @GetMapping("/{id}")
-    public ResponseEntity<SeedbedEvent> getSeedbedEventById(@PathVariable Long id) {
-        return seedbedEventService.getSeedbedEventById(id)
+    public ResponseEntity<SeedbedEvent> getEventById(@PathVariable Long id) {
+        return seedbedEventService.getEventById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // 📌 Obtener eventos por semillero
+    // Obtener eventos por semillero
     @GetMapping("/seedbed/{seedbedId}")
-    public ResponseEntity<List<SeedbedEvent>> getSeedbedEventsBySeedbed(@PathVariable Long seedbedId) {
-        List<SeedbedEvent> events = seedbedEventService.getSeedbedEventsBySeedbed(seedbedId);
-        return ResponseEntity.ok(events);
+    public ResponseEntity<List<SeedbedEvent>> getEventsBySeedbed(@PathVariable Long seedbedId) {
+        return ResponseEntity.ok(seedbedEventService.getEventsBySeedbed(seedbedId));
     }
 
-    // 📌 Crear un evento
+    // Crear un evento
     @PostMapping
-    public ResponseEntity<?> createSeedbedEvent(@RequestBody SeedbedEvent event) {
-        try {
-            SeedbedEvent created = seedbedEventService.createSeedbedEvent(event);
-            return ResponseEntity.status(HttpStatus.CREATED).body(created);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+    public ResponseEntity<SeedbedEvent> createEvent(@RequestBody SeedbedEvent event) {
+        SeedbedEvent created = seedbedEventService.createEvent(event);
+        return ResponseEntity.ok(created);
     }
 
-    // 📌 Actualizar un evento
+    // Actualizar un evento
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateSeedbedEvent(@PathVariable Long id, @RequestBody SeedbedEvent event) {
-        try {
-            SeedbedEvent updated = seedbedEventService.updateSeedbedEvent(id, event);
-            return ResponseEntity.ok(updated);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+    public ResponseEntity<SeedbedEvent> updateEvent(@PathVariable Long id, @RequestBody SeedbedEvent event) {
+        SeedbedEvent updated = seedbedEventService.updateEvent(id, event);
+        return ResponseEntity.ok(updated);
     }
 
-    // 📌 Eliminar un evento
+    // Eliminar un evento
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteSeedbedEvent(@PathVariable Long id) {
-        try {
-            seedbedEventService.deleteSeedbedEvent(id);
-            return ResponseEntity.ok("SeedbedEvent eliminado correctamente");
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+    public ResponseEntity<Void> deleteEvent(@PathVariable Long id) {
+        seedbedEventService.deleteEvent(id);
+        return ResponseEntity.noContent().build();
     }
 }

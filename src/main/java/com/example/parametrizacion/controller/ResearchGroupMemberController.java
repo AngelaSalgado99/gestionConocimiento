@@ -1,16 +1,18 @@
 package com.example.parametrizacion.controller;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.example.parametrizacion.model.ResearchGroupMember;
 import com.example.parametrizacion.service.ResearchGroupMemberService;
 
@@ -34,7 +36,7 @@ public class ResearchGroupMemberController {
     }
 
     @GetMapping("/group/{groupId}")
-    public List<ResearchGroupMember> getResearchGroupMembersByGroup(@PathVariable String groupId) {
+    public List<ResearchGroupMember> getResearchGroupMembersByGroup(@PathVariable Long groupId) {
         return researchGroupMemberService.getResearchGroupMembersByGroup(groupId);
     }
 
@@ -44,18 +46,18 @@ public class ResearchGroupMemberController {
             ResearchGroupMember created = researchGroupMemberService.createResearchGroupMember(member);
             return ResponseEntity.ok(created);
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(null);
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResearchGroupMember> updateResearchGroupMember(@PathVariable Long id, 
+    public ResponseEntity<ResearchGroupMember> updateResearchGroupMember(@PathVariable Long id,
             @RequestBody ResearchGroupMember member) {
         try {
             ResearchGroupMember updated = researchGroupMemberService.updateResearchGroupMember(id, member);
             return ResponseEntity.ok(updated);
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(null);
         }
     }
 

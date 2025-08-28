@@ -10,5 +10,5 @@ import com.example.parametrizacion.model.ResearchGroup;
 @Repository
 public interface ResearchGroupRepository extends JpaRepository<ResearchGroup, Long> {
     List<ResearchGroup> findByRegionalsId(Long regionalsId);
-    List<ResearchGroup> findByCentersId(Long centerId);
+    List<ResearchGroup> findByCenterId(Long centerId);
 }

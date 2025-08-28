@@ -1,81 +1,111 @@
 package com.example.parametrizacion.model;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDate;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-
 @Entity
-@Table(name = "research_projects")
+@Table(name = "researchProjects")
 public class ResearchProject {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
+    @NotBlank(message = "The 'title' field is required")
     @Column(nullable = false)
-    private String name;
-    
-    @Column(columnDefinition = "TEXT")
+    private String title;
+
     private String description;
 
+    @NotNull(message = "The 'startDate' field is required")
     @Column(nullable = false)
     private LocalDate startDate;
 
-    @Column(nullable = false)  // Había un espacio extra
     private LocalDate endDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "research_group_id")
+    // 🔹 Relación con ResearchGroup
+    @ManyToOne
+    @JoinColumn(name = "research_group_id", nullable = false)
     private ResearchGroup researchGroup;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "seedbed_id")
-    private ResearchSeedbed researchSeedbed;  // Era "seedbed" - debe coincidir con el nombre de la clase
+    // 🔹 Relación con ResearchSeedbed
+    @ManyToOne
+    @JoinColumn(name = "research_seedbed_id", nullable = false)
+    private ResearchSeedbed researchSeedbed;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "research_line_id", nullable = false)  // Era "reserch_line_id"
-    private ResearchLines researchLine;  // Era "ResearchLine" - debe ser "ResearchLines"
+    // 🔹 Relación con ResearchLine
+    @ManyToOne
+    @JoinColumn(name = "research_line_id", nullable = false)
+    private ResearchLines researchLine;
 
-    @Enumerated(EnumType.STRING)
-    private ProjectStatus status;
-
-    // Constructores, getters y setters
     public ResearchProject() {}
 
     // Getters y Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-    
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
-    
-    public LocalDate getStartDate() { return startDate; }
-    public void setStartDate(LocalDate startDate) { this.startDate = startDate; }
-    
-    public LocalDate getEndDate() { return endDate; }
-    public void setEndDate(LocalDate endDate) { this.endDate = endDate; }
-    
-    public ResearchGroup getResearchGroup() { return researchGroup; }
-    public void setResearchGroup(ResearchGroup researchGroup) { this.researchGroup = researchGroup; }
-    
-    public ResearchSeedbed getResearchSeedbed() { return researchSeedbed; }
-    public void setResearchSeedbed(ResearchSeedbed researchSeedbed) { this.researchSeedbed = researchSeedbed; }
-    
-    public ResearchLines getResearchLine() { return researchLine; }
-    public void setResearchLine(ResearchLines researchLine) { this.researchLine = researchLine; }
-    
-    public ProjectStatus getStatus() { return status; }
-    public void setStatus(ProjectStatus status) { this.status = status; }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public ResearchGroup getResearchGroup() {
+        return researchGroup;
+    }
+
+    public void setResearchGroup(ResearchGroup researchGroup) {
+        this.researchGroup = researchGroup;
+    }
+
+    public ResearchSeedbed getResearchSeedbed() {
+        return researchSeedbed;
+    }
+
+    public void setResearchSeedbed(ResearchSeedbed researchSeedbed) {
+        this.researchSeedbed = researchSeedbed;
+    }
+
+    public ResearchLines getResearchLine() {
+        return researchLine;
+    }
+
+    public void setResearchLine(ResearchLines researchLine) {
+        this.researchLine = researchLine;
+    }
 }
