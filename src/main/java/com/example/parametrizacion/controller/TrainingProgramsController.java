@@ -70,7 +70,7 @@ public class TrainingProgramsController {
     public ResponseEntity<?> delete(@PathVariable Long researchLinesId, @PathVariable Long id) {
     boolean deleted = trainingProgramsService.delete(id, researchLinesId);
         if (deleted) {
-            return ResponseEntity.ok().body("Research Line deleted");
+            return ResponseEntity.ok().body("Training Program deleted");
         } else {
         return ResponseEntity.noContent().build();
         }

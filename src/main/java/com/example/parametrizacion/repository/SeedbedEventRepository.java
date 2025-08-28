@@ -10,4 +10,5 @@ import com.example.parametrizacion.model.SeedbedEvent;
 @Repository
 public interface SeedbedEventRepository extends JpaRepository<SeedbedEvent, Long> {
     List<SeedbedEvent> findByResearchSeedbedId(Long seedbedId);
+    boolean existsByNameAndResearchSeedbedId(String name, Long seedbedId);
 }

@@ -27,7 +27,7 @@ public class ResearchGroupService {
         return researchGroupRepository.findAll();
     }
 
-    public Optional<ResearchGroup> getResearchGroupById(String id) {
+    public Optional<ResearchGroup> getResearchGroupById(Long id) {
         return researchGroupRepository.findById(id);
     }
 
@@ -61,7 +61,7 @@ public class ResearchGroupService {
         return researchGroupRepository.save(researchGroup);
     }
 
-    public ResearchGroup updateResearchGroup(String id, ResearchGroup researchGroup) {
+    public ResearchGroup updateResearchGroup(Long id, ResearchGroup researchGroup) {
         if (!researchGroupRepository.existsById(id)) {
             throw new RuntimeException("ResearchGroup not found");
         }
@@ -86,7 +86,7 @@ public class ResearchGroupService {
         return researchGroupRepository.save(researchGroup);
     }
 
-    public void deleteResearchGroup(String id) {
+    public void deleteResearchGroup(Long id) {
         if (!researchGroupRepository.existsById(id)) {
             throw new RuntimeException("ResearchGroup not found");
         }
